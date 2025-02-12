@@ -8,7 +8,7 @@
 #         ans += 1
 #
 # print(ans)
+ans = sum(len(input()) == i for i in range(1, 13))
+print(ans)
 
 
-s = [input() for _ in range(12)]
-print(sum([len(s[i]) == i + 1 for i in range(12)]))
