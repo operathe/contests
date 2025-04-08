@@ -1,28 +1,36 @@
-import itertools
-
-
-N = int(input())
-
 N, M = map(int, input().split())
 
-A = list(map(int, input().split()))
+total_squares = N * N
 
-S = []
-for i in range(N):
-    S.append(int(input()))
+dangerous_count = 0
+dangerous_positions = set()
 
-A = [list(map(int, input().split())) for _ in range(N)]
+for _ in range(M):
+    a, b = map(int, input().split())
+    position = (a, b)
 
+    if position not in dangerous_positions:
+        dangerous_positions.add(position)
+        dangerous_count += 1
 
-array = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    knight_moves = [
+        (2, 1),
+        (1, 2),
+        (-1, 2),
+        (-2, 1),
+        (-2, -1),
+        (-1, -2),
+        (1, -2),
+        (2, -1),
+    ]
 
-# 累積和
-cumsum = list(itertools.accumulate(array))
-print(*cumsum)
+    for da, db in knight_moves:
+        na, nb = a + da, b + db
+        new_position = (na, nb)
+        if 1 <= na <= N and 1 <= nb <= N and new_position not in dangerous_positions:
+            dangerous_positions.add(new_position)
+            dangerous_count += 1
 
-# bitが立っているものだけ取り出す
-a_list = [1, 2, 3, 4, 5]
-a_bit = [0, 1, 0, 1, 1]
+safe_count = total_squares - dangerous_count
 
-a = list(itertools.compress(a_list, a_bit))
-print(a)
+print(safe_count)

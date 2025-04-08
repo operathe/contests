@@ -1,28 +1,26 @@
-import itertools
+# 8行の入力を受け取る
+grid = []
+for _ in range(8):
+    row = input()
+    grid.append(row)
 
+# 駒が置かれているマスの行と列を記録する
+occupied_rows = set()
+occupied_cols = set()
 
-N = int(input())
+for i in range(8):
+    for j in range(8):
+        if grid[i][j] == "#":
+            occupied_rows.add(i)
+            occupied_cols.add(j)
 
-N, M = map(int, input().split())
+# 安全なマスをカウント
+safe_count = 0
+for i in range(8):
+    for j in range(8):
+        # 現在のマスが空いていて、その行と列に他の駒がないかを確認
+        if grid[i][j] == "." and i not in occupied_rows and j not in occupied_cols:
+            safe_count += 1
 
-A = list(map(int, input().split()))
-
-S = []
-for i in range(N):
-    S.append(int(input()))
-
-A = [list(map(int, input().split())) for _ in range(N)]
-
-
-array = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-
-# 累積和
-cumsum = list(itertools.accumulate(array))
-print(*cumsum)
-
-# bitが立っているものだけ取り出す
-a_list = [1, 2, 3, 4, 5]
-a_bit = [0, 1, 0, 1, 1]
-
-a = list(itertools.compress(a_list, a_bit))
-print(a)
+# 結果を出力
+print(safe_count)
