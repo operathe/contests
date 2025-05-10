@@ -1,28 +1,24 @@
-import itertools
+n, k = map(int, input().split())
+s = input().strip()
 
+segments = []
+i = 0
+while i < n:
+    if s[i] == "1":
+        st = i
+        while i + 1 < n and s[i + 1] == "1":
+            i += 1
+        ed = i
+        segments.append((st, ed))
+    i += 1
 
-N = int(input())
+prev_end = segments[k - 2][1]
+st_k, ed_k = segments[k - 1]
+length_k = ed_k - st_k + 1
 
-N, M = map(int, input().split())
-
-A = list(map(int, input().split()))
-
-S = []
-for i in range(N):
-    S.append(int(input()))
-
-A = [list(map(int, input().split())) for _ in range(N)]
-
-
-array = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-
-# 累積和
-cumsum = list(itertools.accumulate(array))
-print(*cumsum)
-
-# bitが立っているものだけ取り出す
-a_list = [1, 2, 3, 4, 5]
-a_bit = [0, 1, 0, 1, 1]
-
-a = list(itertools.compress(a_list, a_bit))
-print(a)
+res = []
+res.append(s[: prev_end + 1])
+res.append("1" * length_k)
+res.append("0" * (st_k - prev_end - 1))
+res.append(s[ed_k + 1 :])
+print("".join(res))

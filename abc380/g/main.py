@@ -1,28 +1,67 @@
-import itertools
+MOD = 998244353
+inv2 = (MOD + 1) // 2
+inv4 = inv2 * inv2 % MOD
+
+N, K = map(int, input().split())
+P = list(map(int, input().split()))
+
+bit1 = [0] * (N + 1)
 
 
-N = int(input())
-
-N, M = map(int, input().split())
-
-A = list(map(int, input().split()))
-
-S = []
-for i in range(N):
-    S.append(int(input()))
-
-A = [list(map(int, input().split())) for _ in range(N)]
+def add1(i, v):
+    while i <= N:
+        bit1[i] += v
+        i += i & -i
 
 
-array = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+def sum1(i):
+    s = 0
+    while i > 0:
+        s += bit1[i]
+        i -= i & -i
+    return s
 
-# 累積和
-cumsum = list(itertools.accumulate(array))
-print(*cumsum)
 
-# bitが立っているものだけ取り出す
-a_list = [1, 2, 3, 4, 5]
-a_bit = [0, 1, 0, 1, 1]
+inv_total = 0
+for x in P:
+    inv_total += sum1(N) - sum1(x)
+    add1(x, 1)
+inv_total %= MOD
 
-a = list(itertools.compress(a_list, a_bit))
-print(a)
+bit2 = [0] * (N + 1)
+
+
+def add2(i, v):
+    while i <= N:
+        bit2[i] += v
+        i += i & -i
+
+
+def sum2(i):
+    s = 0
+    while i > 0:
+        s += bit2[i]
+        i -= i & -i
+    return s
+
+
+inv_w = 0
+for i in range(K):
+    x = P[i]
+    inv_w += sum2(N) - sum2(x)
+    add2(x, 1)
+sum_seg = inv_w % MOD
+for i in range(1, N - K + 1):
+    old = P[i - 1]
+    inv_w -= sum2(old - 1)
+    add2(old, -1)
+    new = P[i + K - 1]
+    inv_w += sum2(N) - sum2(new)
+    add2(new, 1)
+    sum_seg = (sum_seg + inv_w) % MOD
+
+den = N - K + 1
+inv_den = pow(den, MOD - 2, MOD)
+const_part = K * (K - 1) % MOD * inv4 % MOD
+ans = (inv_total + const_part - sum_seg * inv_den % MOD) % MOD
+print(ans)
