@@ -5,3 +5,4 @@ contest.acc.json
 tests/
 .gitignore
 .gitignore
+.aider*
