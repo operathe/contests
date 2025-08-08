@@ -1,28 +1,17 @@
-import itertools
+import sys
 
+def can_sort_by_one_adjacent_swap(a):
+    n = len(a)
+    for i in range(n - 1):
+        b = a.copy()
+        b[i], b[i + 1] = b[i + 1], b[i]
+        if all(b[j] == j + 1 for j in range(n)):
+            return True
+    return False
 
-N = int(input())
+def main():
+    a = list(map(int, sys.stdin.read().split()))
+    print("Yes" if can_sort_by_one_adjacent_swap(a) else "No")
 
-N, M = map(int, input().split())
-
-A = list(map(int, input().split()))
-
-S = []
-for i in range(N):
-    S.append(int(input()))
-
-A = [list(map(int, input().split())) for _ in range(N)]
-
-
-array = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-
-# 累積和
-cumsum = list(itertools.accumulate(array))
-print(*cumsum)
-
-# bitが立っているものだけ取り出す
-a_list = [1, 2, 3, 4, 5]
-a_bit = [0, 1, 0, 1, 1]
-
-a = list(itertools.compress(a_list, a_bit))
-print(a)
+if __name__ == "__main__":
+    main()

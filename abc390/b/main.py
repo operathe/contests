@@ -1,28 +1,22 @@
-import itertools
+import sys
 
 
-N = int(input())
-
-N, M = map(int, input().split())
-
-A = list(map(int, input().split()))
-
-S = []
-for i in range(N):
-    S.append(int(input()))
-
-A = [list(map(int, input().split())) for _ in range(N)]
+def is_geometric(seq):
+    n = len(seq)
+    if n <= 2:
+        return True
+    for i in range(n - 2):
+        if seq[i] * seq[i + 2] != seq[i + 1] * seq[i + 1]:
+            return False
+    return True
 
 
-array = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+def main():
+    data = list(map(int, sys.stdin.read().split()))
+    n = data[0]
+    a = data[1:]
+    print("Yes" if is_geometric(a) else "No")
 
-# 累積和
-cumsum = list(itertools.accumulate(array))
-print(*cumsum)
 
-# bitが立っているものだけ取り出す
-a_list = [1, 2, 3, 4, 5]
-a_bit = [0, 1, 0, 1, 1]
-
-a = list(itertools.compress(a_list, a_bit))
-print(a)
+if __name__ == "__main__":
+    main()

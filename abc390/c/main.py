@@ -1,28 +1,37 @@
-import itertools
+import sys
 
+def possible_rectangle(grid):
+    H = len(grid)
+    W = len(grid[0])
+    # find bounding rectangle of all known black cells '#'
+    rows = []
+    cols = []
+    for i in range(H):
+        for j in range(W):
+            if grid[i][j] == '#':
+                rows.append(i)
+                cols.append(j)
+    r_min, r_max = min(rows), max(rows)
+    c_min, c_max = min(cols), max(cols)
+    # check cells inside rectangle: must not be '.'
+    for i in range(r_min, r_max + 1):
+        for j in range(c_min, c_max + 1):
+            if grid[i][j] == '.':
+                return False
+    # cells outside rectangle: must not be '#'
+    for i in range(H):
+        for j in range(W):
+            if not (r_min <= i <= r_max and c_min <= j <= c_max):
+                if grid[i][j] == '#':
+                    return False
+    return True
 
-N = int(input())
+def main():
+    data = sys.stdin.read().split()
+    H, W = map(int, data[:2])
+    rows = data[2:]
+    grid = [list(row) for row in rows]
+    print('Yes' if possible_rectangle(grid) else 'No')
 
-N, M = map(int, input().split())
-
-A = list(map(int, input().split()))
-
-S = []
-for i in range(N):
-    S.append(int(input()))
-
-A = [list(map(int, input().split())) for _ in range(N)]
-
-
-array = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-
-# 累積和
-cumsum = list(itertools.accumulate(array))
-print(*cumsum)
-
-# bitが立っているものだけ取り出す
-a_list = [1, 2, 3, 4, 5]
-a_bit = [0, 1, 0, 1, 1]
-
-a = list(itertools.compress(a_list, a_bit))
-print(a)
+if __name__ == '__main__':
+    main()
