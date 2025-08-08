@@ -1,8 +1,6 @@
-.windsurfrules
-# .vscodeフォルダをgitで管理しない
-.vscode/
-contest.acc.json
-tests/
-.gitignore
-.gitignore
+.git/
 .aider*
+.env/
+.crush*
+CRUSH.md
+.*
